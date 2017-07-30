@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 import { Characters } from './characters.component';
 import { Comics } from './comics.component';
+import { Events } from './events.component';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -13,7 +14,8 @@ import { AppRoutingModule } from './app-routing.module';
   declarations: [
     AppComponent,
     Characters,
-    Comics
+    Comics,
+    Events
   ],
   imports: [
     BrowserModule,

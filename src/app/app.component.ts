@@ -7,14 +7,12 @@ import { Component } from '@angular/core';
         <nav>
             <a routerLink="/characters" routerLinkActive="active">Characters</a>
             <a routerLink="/comics" routerLinkActive="active">Comics</a>
+            <a routerLink="/events" routerLinkActive="active">Events</a>
         </nav>
         <router-outlet></router-outlet>
     `,
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    title = 'Marvel';
-    /*    
-    <a routerLink="/events" routerLinkActive="active">Events</a>
-    */
+    title = 'Marvel';    
 }

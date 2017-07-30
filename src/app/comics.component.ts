@@ -14,7 +14,7 @@ export class Comics implements OnInit {
   tz: string;   
   comics: Comic[];  
   ngOnInit(): void {
-    this.getComics();
+    this.getComics();    
   }
   constructor(private cFetch: Fetch) {
 
