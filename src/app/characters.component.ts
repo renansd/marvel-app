@@ -17,6 +17,7 @@ export class Characters implements OnInit {
   character: Character;
   ngOnInit(): void {
     this.getCharacters();
+    console.log("oninit character");
   }
   constructor(private cFetch: Fetch) {
 
@@ -25,9 +26,5 @@ export class Characters implements OnInit {
     this.data = new Date();
     this.tz = this.data.getTime().toString();
     this.cFetch.getCharacters(this.tz).then(characters => this.characters = characters);
-  }
-
-  nome(): void {
-    alert(this.characters);
-  }
+  }  
 }
