@@ -61,7 +61,7 @@ export class Fetch {
             .toPromise()
             .then((response: any) => {
                 response = response.json();
-                const result: Comic[] = response.data.results;
+                const result: Comic[] = response.data;
                 console.log(response);
                 resolve(result);
             })
@@ -69,11 +69,19 @@ export class Fetch {
         });
     }
 
-    getEvents(hash: string): Promise<Event[]> {
-        this.getUrl = 'http://gateway.marvel.com/v1/public/';        
+    getEvents(hash: string, offset: string, initialLetter: string): Promise<Event[]> {
+        this.getUrl = 'http://gateway.marvel.com/v1/public/events?';  
         this.shash = hash + this.priKey+this.pubKey;
-        this.shash = md5(this.shash);        
-        this.getUrl = this.getUrl + 'events?orderBy=name&limit=' 
+        this.shash = md5(this.shash);
+        if(offset != '0')
+        {
+            this.getUrl = this.getUrl + 'offset=' + offset + '&';
+        }
+        if(initialLetter && initialLetter!='*')
+        {
+            this.getUrl = this.getUrl + 'nameStartsWith=' + initialLetter + '&';
+        }        
+        this.getUrl = this.getUrl + 'orderBy=name&limit=' 
         + this.limit + '&ts=' +  hash + '&apikey=' 
         + this.pubKey + '&hash=' + this.shash;
         console.log(this.getUrl);
@@ -82,7 +90,7 @@ export class Fetch {
             .toPromise()
             .then((response: any) => {
                 response = response.json();
-                const result: Event[] = response.data.results;
+                const result: Event[] = response.data;
                 console.log(response);
                 resolve(result);
             })
@@ -104,6 +112,48 @@ export class Fetch {
             .then((response: any) => {
                 response = response.json();
                 const result: Character[] = response.data;
+                console.log(response);
+                resolve(result);
+            })
+            .catch(err => reject(err));            
+        });
+    }
+
+    getComic(hash: string, id: string): Promise<Comic[]> {
+        this.getUrl = 'http://gateway.marvel.com/v1/public/comics/' + id + '?';        
+        this.shash = hash + this.priKey+this.pubKey;
+        this.shash = md5(this.shash);        
+        this.getUrl = this.getUrl 
+        + '&ts=' +  hash + '&apikey=' 
+        + this.pubKey + '&hash=' + this.shash;
+        console.log(this.getUrl);
+        return new Promise<Comic[]>((resolve, reject) => { 
+            this.http.get(this.getUrl)
+            .toPromise()
+            .then((response: any) => {
+                response = response.json();
+                const result: Comic[] = response.data;
+                console.log(response);
+                resolve(result);
+            })
+            .catch(err => reject(err));            
+        });
+    }
+
+    getEvent(hash: string, id: string): Promise<Event[]> {
+        this.getUrl = 'http://gateway.marvel.com/v1/public/comics/' + id + '?';        
+        this.shash = hash + this.priKey+this.pubKey;
+        this.shash = md5(this.shash);        
+        this.getUrl = this.getUrl 
+        + '&ts=' +  hash + '&apikey=' 
+        + this.pubKey + '&hash=' + this.shash;
+        console.log(this.getUrl);
+        return new Promise<Event[]>((resolve, reject) => { 
+            this.http.get(this.getUrl)
+            .toPromise()
+            .then((response: any) => {
+                response = response.json();
+                const result: Event[] = response.data;
                 console.log(response);
                 resolve(result);
             })

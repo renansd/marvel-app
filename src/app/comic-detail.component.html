@@ -1,0 +1,9 @@
+<ul class="comic">
+  <li *ngFor="let comic of comic.results">
+    <span>{{comic.id}}</span>    
+    <span>{{comic.name}}</span>
+    <span>{{comic.description}}</span>
+    <span>{{comic.total}}</span>
+    <img src="{{comic.thumbnail.path + size + comic.thumbnail.extension}}">    
+  </li>  
+</ul>

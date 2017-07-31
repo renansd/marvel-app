@@ -9,6 +9,8 @@ import { Characters } from './characters.component';
 import { Comics } from './comics.component';
 import { Events } from './events.component';
 import { CharacterDetail } from './character-detail.component';
+import { ComicDetail } from './comic-detail.component';
+import { EventDetail } from './event-detail.component';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -18,7 +20,9 @@ import { AppRoutingModule } from './app-routing.module';
     Characters,
     Comics,
     Events,
-    CharacterDetail
+    CharacterDetail,
+    ComicDetail,
+    EventDetail
   ],
   imports: [
     BrowserModule,

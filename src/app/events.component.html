@@ -1,7 +1,11 @@
-<h1>{{title}}</h1>
-<h2>{{hash}}</h2>
+<form #filterForm="ngForm">
+  First letter filter: 
+  <select name="letterPicker" [(ngModel)]="initialLetter">
+    <option *ngFor="let letter of alphabet;" [ngValue]="letter">{{letter}}</option>
+  </select>
+</form>
 <ul class="events">
-  <li *ngFor="let event of events">    
-    <span >{{event.id}}</span> <span> {{event.title}} </span>
+  <li *ngFor="let event of events.results">    
+    <a href="{{'eventdetail?id=' + event.id }}"> {{event.title}} </a>
   </li>  
 </ul>

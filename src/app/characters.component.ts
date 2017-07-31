@@ -2,13 +2,9 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { md5 } from './md5';
 import { Fetch } from './fetch.service';
 import { Character } from './character'; 
-import { NgForm } from '@angular/forms';
+import {NgForm} from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router, NavigationCancel, Params} from '@angular/router';
-import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/bufferTime';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/filter';
 @Component({
   selector: 'character',
   templateUrl: './characters.component.html',
@@ -22,28 +18,24 @@ export class Characters implements OnInit {
   characters: any = {};
   character: Character;
   offset: number;
-  initialLetter: string = '*';
-  endEvent: Subject<any>;
+  pastLetter: string;
+  initialLetter: string;
+  subscription: any;
   @ViewChild('filterForm') filterForm: NgForm;
-  alphabet = [{letter: 'A'}, ]
+  alphabet: string[] = ['*', 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','Y','Z'];
   ngOnInit(): void {
-    this.endEvent = new Subject<any>();     
-    this.filterForm.valueChanges
-    .filter(() => this.filterForm.valid)
-    .takeUntil(this.endEvent)
-    .debounceTime(0)
-    .bufferTime(0)         
-    .subscribe(() => {      
+    this.getCharacters();
+    console.log(this.filterForm.valueChanges);
+    this.subscription = this.filterForm.valueChanges.debounceTime(0);
+    this.subscription.subscribe(() => {
       this.offset = 0;
       this.render();
-    });
-    this.getCharacters();         
+    });        
   }
-  ngOnDestroy(): void {
-    if(this.endEvent) {
-      this.endEvent.next();
-    }
-  }
+  ngOnDestroy()
+  {
+    this.subscription.unsubscribe();
+  }  
   constructor(private cFetch: Fetch, private router: Router, private route: ActivatedRoute) {
     this.route.queryParams.subscribe((params: Params) => {
       this.offset = params['off'];      
@@ -63,17 +55,16 @@ export class Characters implements OnInit {
   }
 
   render(): void {
-    //console.log('off=' + this.offset + "&ini=" + this.initialLetter);
-    console.log("hello");
+    console.log('off=' + this.offset + "&ini=" + this.initialLetter + "&PASTELETTER=" + this.pastLetter);
     //this.router.navigateByUrl('characters?off=' + this.offset + '&ini=' + this.initialLetter);
     //location.replace('characters?off=' + this.offset + '&ini=' + this.initialLetter);
-    /*this.router.navigate(['characters'], {
-      queryParams: {off: this.offset, ini: this.initialLetter}      
-    });*/
-    //this.nextPage();
-  }
-  
-  nextPage(): void {    
-    this.cFetch.getCharacters(this.tz, (this.offset*20).toString(), this.initialLetter).then(characters => this.characters = characters);
-  }
+    if(this.pastLetter != this.initialLetter)
+    {
+      this.pastLetter = this.initialLetter;
+      this.router.navigate(['characters'], {
+        queryParams: {off: this.offset, ini: this.initialLetter}      
+      });
+    }    
+    this.getCharacters();
+  } 
 }

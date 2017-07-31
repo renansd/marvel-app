@@ -1,8 +1,6 @@
-<h1>{{title}}</h1>
-<h2>{{hash}}</h2>
 <form #filterForm="ngForm">
-  <select name="letterPicker" [ngModel]="initialLetter">
-    <option *ngFor="let letter of alphabet;" [value]="letter">{{letter}}</option>
+  <select name="letterPicker" [(ngModel)]="initialLetter">
+    <option *ngFor="let letter of alphabet;" [ngValue]="letter">{{letter}}</option>
   </select>
 </form>
 <ul class="character">

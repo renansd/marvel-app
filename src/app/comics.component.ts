@@ -12,7 +12,7 @@ export class Comics implements OnInit {
   title = 'Marvel';
   data: Date;
   tz: string;   
-  comics: Comic[];  
+  comics: any = {};  
   ngOnInit(): void {
     this.getComics();    
   }

@@ -1,0 +1,9 @@
+<ul class="event">
+  <li *ngFor="let event of event.results">
+    <span>{{event.id}}</span>    
+    <span>{{event.name}}</span>
+    <span>{{event.description}}</span>
+    <span>{{event.total}}</span>
+    <img src="{{event.thumbnail.path + size + event.thumbnail.extension}}">    
+  </li>  
+</ul>
