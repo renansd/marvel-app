@@ -17,11 +17,15 @@ export class Fetch {
     constructor(private http: Http) { 
 
     }
-    getCharacters(hash: string): Promise<Character[]> {
-        this.getUrl = 'http://gateway.marvel.com/v1/public/';  
+    getCharacters(hash: string, offset: string): Promise<Character[]> {
+        this.getUrl = 'http://gateway.marvel.com/v1/public/characters?';  
         this.shash = hash + this.priKey+this.pubKey;
-        this.shash = md5(this.shash);        
-        this.getUrl = this.getUrl + 'characters?orderBy=name&limit=' 
+        this.shash = md5(this.shash);
+        if(offset != '0')
+        {
+            this.getUrl = this.getUrl + 'offset=' + offset + '&';
+        }        
+        this.getUrl = this.getUrl + 'orderBy=name&limit=' 
         + this.limit + '&ts=' +  hash + '&apikey=' 
         + this.pubKey + '&hash=' + this.shash;
         console.log(this.getUrl);
@@ -75,6 +79,27 @@ export class Fetch {
             .then((response: any) => {
                 response = response.json();
                 const result: Event[] = response.data.results;
+                console.log(response);
+                resolve(result);
+            })
+            .catch(err => reject(err));            
+        });
+    }
+
+    getCharacter(hash: string, id: number): Promise<Character[]> {
+        this.getUrl = 'http://gateway.marvel.com/v1/public/characters/' + id.toString() + '?';        
+        this.shash = hash + this.priKey+this.pubKey;
+        this.shash = md5(this.shash);        
+        this.getUrl = this.getUrl 
+        + '&ts=' +  hash + '&apikey=' 
+        + this.pubKey + '&hash=' + this.shash;
+        console.log(this.getUrl);
+        return new Promise<Character[]>((resolve, reject) => { 
+            this.http.get(this.getUrl)
+            .toPromise()
+            .then((response: any) => {
+                response = response.json();
+                const result: Character[] = response.data.results;
                 console.log(response);
                 resolve(result);
             })
