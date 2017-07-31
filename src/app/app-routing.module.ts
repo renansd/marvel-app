@@ -7,11 +7,11 @@ import { Events }   from './events.component';
 import { CharacterDetail } from './character-detail.component';
  
 const routes: Routes = [
-  { path: '', redirectTo: '/characters', pathMatch: 'full' },
+  { path: '', redirectTo: '/characters?off=0&ini=*', pathMatch: 'full' },
   { path: 'characters', component: Characters },
   { path: 'comics', component: Comics },
   { path: 'events', component: Events },
-  { path: 'characterdetail/:id', component: CharacterDetail }  
+  { path: 'characterdetail', component: CharacterDetail }  
 ];
  
 @NgModule({

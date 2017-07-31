@@ -17,13 +17,17 @@ export class Fetch {
     constructor(private http: Http) { 
 
     }
-    getCharacters(hash: string, offset: string): Promise<Character[]> {
+    getCharacters(hash: string, offset: string, initialLetter: string): Promise<Character[]> {
         this.getUrl = 'http://gateway.marvel.com/v1/public/characters?';  
         this.shash = hash + this.priKey+this.pubKey;
         this.shash = md5(this.shash);
         if(offset != '0')
         {
             this.getUrl = this.getUrl + 'offset=' + offset + '&';
+        }
+        if(initialLetter && initialLetter!='*')
+        {
+            this.getUrl = this.getUrl + 'nameStartsWith=' + initialLetter + '&';
         }        
         this.getUrl = this.getUrl + 'orderBy=name&limit=' 
         + this.limit + '&ts=' +  hash + '&apikey=' 
@@ -34,7 +38,7 @@ export class Fetch {
             .toPromise()
             .then((response: any) => {
                 response = response.json();
-                const result: Character[] = response.data.results;
+                const result: Character[] = response.data;
                 console.log(response);
                 resolve(result);
             })
@@ -86,8 +90,8 @@ export class Fetch {
         });
     }
 
-    getCharacter(hash: string, id: number): Promise<Character[]> {
-        this.getUrl = 'http://gateway.marvel.com/v1/public/characters/' + id.toString() + '?';        
+    getCharacter(hash: string, id: string): Promise<Character[]> {
+        this.getUrl = 'http://gateway.marvel.com/v1/public/characters/' + id + '?';        
         this.shash = hash + this.priKey+this.pubKey;
         this.shash = md5(this.shash);        
         this.getUrl = this.getUrl 
@@ -99,7 +103,7 @@ export class Fetch {
             .toPromise()
             .then((response: any) => {
                 response = response.json();
-                const result: Character[] = response.data.results;
+                const result: Character[] = response.data;
                 console.log(response);
                 resolve(result);
             })
