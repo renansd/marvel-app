@@ -3,13 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
  
 import { Characters }   from './characters.component';
 import { Comics }   from './comics.component';
-import { Events}   from './events.component';
+import { Events }   from './events.component';
+import { CharacterDetail } from './character-detail.component';
  
 const routes: Routes = [
   { path: '', redirectTo: '/characters', pathMatch: 'full' },
-  { path: 'characters', component: Characters},
-  { path: 'comics', component: Comics},
-  { path: 'events', component: Events}  
+  { path: 'characters', component: Characters },
+  { path: 'comics', component: Comics },
+  { path: 'events', component: Events },
+  { path: 'characterdetail/:id', component: CharacterDetail }  
 ];
  
 @NgModule({

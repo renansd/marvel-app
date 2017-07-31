@@ -1,0 +1,10 @@
+<h1>{{title}}</h1>
+<h2>{{hash}}</h2>
+<ul class="character">
+  <li *ngFor="let character of character">
+    <span>{{character.id}}</span>    
+    <span>{{character.name}}</span>
+    <span>{{character.description}}</span>
+    <img src="{{character.thumbnail.path + size + character.thumbnail.extension}}">    
+  </li>  
+</ul>

@@ -2,7 +2,7 @@
 <h2>{{hash}}</h2>
 <ul class="character">
   <li *ngFor="let character of characters">    
-    <span >{{character.id}}</span> {{character.name}}
+    <button (click)="gotoDetail(character.id)"> {{character.name}} </button>
   </li>
-  <button (click)="nome()"> oi </button>
+  <button (click)="nextPage()"> Next Page </button>
 </ul>
