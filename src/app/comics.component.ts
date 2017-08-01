@@ -54,8 +54,10 @@ export class Comics implements OnInit {
   }
   constructor(private cFetch: Fetch, private router: Router, private route: ActivatedRoute) {
     this.route.queryParams.subscribe((params: Params) => {
-      this.offset = params['off'];
-      this.initialLetter = params['ini'];
+      if(params['off']) this.offset = params['off'];
+      else this.offset = 0;
+      if(params['ini']) this.initialLetter = params['ini'];
+      else this.initialLetter = '*';
       this.pastLetter = this.initialLetter;
       this.oldOffset = this.offset;
     });

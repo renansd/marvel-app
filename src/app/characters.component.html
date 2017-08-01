@@ -9,8 +9,7 @@
     <option *ngFor="let key of characters.total | indexCharacter" [ngValue]="key.off">{{key.range}}</option>
   </select>
 </form>
-<ul class="character">
-  <span> Total = {{characters.total}} </span>
+<ul class="character"> 
   <li *ngFor="let character of characters.results">    
     <a href="{{'characterdetail?id=' + character.id }}"> {{character.name}} </a>
   </li>  

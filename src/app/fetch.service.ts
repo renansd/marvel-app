@@ -21,7 +21,7 @@ export class Fetch {
         this.getUrl = 'http://gateway.marvel.com/v1/public/characters?';
         this.shash = hash + this.priKey + this.pubKey;
         this.shash = md5(this.shash);
-        if (offset && offset !== 0 ) {
+        if (offset && offset !== 0) {
             console.log("OLHA EU AQUI" + offset);
             this.getUrl = this.getUrl + 'offset=' + offset + '&';
         }
@@ -37,11 +37,21 @@ export class Fetch {
                 .toPromise()
                 .then((response: any) => {
                     response = response.json();
-                    const result: Character[] = response.data;
                     console.log(response);
-                    resolve(result);
+                    if (response.code == '200') {
+                        const result: Character[] = response.data;
+                        this.saveLocalStorage('characters', response.data.results);
+                        resolve(result);
+                    } else {
+                        const result = this.loadLocalStorage('characters', offset, initialLetter, '0');
+                        resolve(result);
+                    }
+
                 })
-                .catch(err => reject(err));
+                .catch(err => {
+                    const result = this.loadLocalStorage('characters', offset, initialLetter, '0');
+                    resolve(result);
+                });
         });
         //this.rCharacter = new Character(1, 'Renan');       
     }
@@ -66,11 +76,19 @@ export class Fetch {
                 .toPromise()
                 .then((response: any) => {
                     response = response.json();
-                    const result: Comic[] = response.data;
-                    console.log(response);
-                    resolve(result);
+                    if (response.code == '200') {
+                        const result: Comic[] = response.data;
+                        this.saveLocalStorage('comics', response.data.results);
+                        resolve(result);
+                    } else {
+                        const result = this.loadLocalStorage('comics', offset, initialLetter, '0');
+                        resolve(result);
+                    }
                 })
-                .catch(err => reject(err));
+                .catch(err => {
+                    const result = this.loadLocalStorage('comics', offset, initialLetter, '0');
+                    resolve(result);
+                });
         });
     }
 
@@ -79,12 +97,12 @@ export class Fetch {
         this.shash = hash + this.priKey + this.pubKey;
         this.shash = md5(this.shash);
         if (offset !== 0 && offset) {
-            this.getUrl = this.getUrl + 'offset=' + offset + '&';
+            this.getUrl = this.getUrl + 'orderBy=name&offset=' + offset + '&';
         }
         if (initialLetter && initialLetter != '*') {
             this.getUrl = this.getUrl + 'nameStartsWith=' + initialLetter + '&';
         }
-        this.getUrl = this.getUrl + 'orderBy=name&limit='
+        this.getUrl = this.getUrl + 'limit='
             + this.limit + '&ts=' + hash + '&apikey='
             + this.pubKey + '&hash=' + this.shash;
         console.log(this.getUrl);
@@ -93,11 +111,19 @@ export class Fetch {
                 .toPromise()
                 .then((response: any) => {
                     response = response.json();
-                    const result: Event[] = response.data;
-                    console.log(response);
-                    resolve(result);
+                    if (response.code == '200') {
+                        const result: Event[] = response.data;
+                        this.saveLocalStorage('events', response.data.results);
+                        resolve(result);
+                    } else {
+                        const result = this.loadLocalStorage('events', offset, initialLetter, '0');
+                        resolve(result);
+                    }
                 })
-                .catch(err => reject(err));
+                .catch(err => {
+                    const result = this.loadLocalStorage('events', offset, initialLetter, '0');
+                    resolve(result);
+                });
         });
     }
 
@@ -114,11 +140,19 @@ export class Fetch {
                 .toPromise()
                 .then((response: any) => {
                     response = response.json();
-                    const result: Character[] = response.data;
-                    console.log(response);
-                    resolve(result);
+                    if (response.code == '200') {
+                        const result: Character[] = response.data;
+                        this.saveLocalStorage('characters', response.data.results);
+                        resolve(result);
+                    } else {
+                        const result = this.loadLocalStorage('character', 0, '*', id);
+                        resolve(result);
+                    }
                 })
-                .catch(err => reject(err));
+                .catch(err => {
+                    const result = this.loadLocalStorage('character', 0, '*', id);
+                    resolve(result);
+                });
         });
     }
 
@@ -135,16 +169,24 @@ export class Fetch {
                 .toPromise()
                 .then((response: any) => {
                     response = response.json();
-                    const result: Comic[] = response.data;
-                    console.log(response);
-                    resolve(result);
+                    if (response.code == '200') {
+                        const result: Comic[] = response.data;
+                        this.saveLocalStorage('comics', response.data.results);
+                        resolve(result);
+                    } else {
+                        const result = this.loadLocalStorage('comic', 0, '*', id);
+                        resolve(result);
+                    }
                 })
-                .catch(err => reject(err));
+                .catch(err => {
+                    const result = this.loadLocalStorage('comic', 0, '*', id);
+                    resolve(result);
+                });
         });
     }
 
     getEvent(hash: string, id: string): Promise<Event[]> {
-        this.getUrl = 'http://gateway.marvel.com/v1/public/comics/' + id + '?';
+        this.getUrl = 'http://gateway.marvel.com/v1/public/events/' + id + '?';
         this.shash = hash + this.priKey + this.pubKey;
         this.shash = md5(this.shash);
         this.getUrl = this.getUrl
@@ -156,32 +198,90 @@ export class Fetch {
                 .toPromise()
                 .then((response: any) => {
                     response = response.json();
-                    const result: Event[] = response.data;
-                    console.log(response);
-                    resolve(result);
+                    if (response.code == '200') {
+                        const result: Event[] = response.data;
+                        this.saveLocalStorage('events', response.data.results);
+                        resolve(result);
+                    } else {
+                        const result = this.loadLocalStorage('event', 0, '*', id);
+                        resolve(result);
+                    }
                 })
-                .catch(err => reject(err));
+                .catch(err => {
+                    const result = this.loadLocalStorage('event', 0, '*', id);
+                    resolve(result);
+                });
         });
     }
 
-    saveLocalStorage(type: string, response: any): void {
-        for (let i = 0; i < response.data.length; i++) {
-            localStorage[type].push(response.data.results[i]);
+    saveLocalStorage(type: string, data: any): void {
+        let idx;
+        let array: any[];        
+        if (!localStorage[type]) {
+            localStorage[type] = '[]';
+        } else {
+            array = JSON.parse(localStorage[type]);
         }
+        if (!Array.isArray(array)) array = [];
+        for (let i = 0; i < data.length; i++) {
+            idx = array.findIndex(item =>
+                item.id === data[i].id
+            );
+            if (idx !== -1) {
+                array[idx] = data[i];
+            } else {
+                array.push(data[i]);
+            }
+        }        
+        localStorage[type] = JSON.stringify(array);        
     }
 
-    loadLocalStorage(type: string, offset: string, initialLetter: string): void {
-        let data: any;
-        let results: any[];
-        data.total = localStorage[type].length;
+    loadLocalStorage(type: string, offset: number, initialLetter: string, id: string): any[] {
+        let data: any = {};
+        let results: any[];        
+        let array: any[];
+        if (type === 'character' || type === 'comic' || type == 'event') array = JSON.parse(localStorage[type+'s']);
+        else array = JSON.parse(localStorage[type]);
+        data.total = array.length;
         if (type === 'comics' || type === 'comic') {
-            data.results = localStorage[type].filter(item =>
-                initialLetter === '*' || item.title[0] === initialLetter
-            ).slice(offset, 100);
-        }else{
-            data.results = localStorage[type].filter(item =>
-                initialLetter === '*' || item.name[0] === initialLetter
-            ).slice(offset, 100);
+            array.sort((n1, n2) => {
+                if (n1.title > n2.title) {
+                    return 1;
+                }
+                if (n1.title < n2.title) {
+                    return -1;
+                }
+                return 0;
+            });
+            if (type === 'comics') {
+                data.results = array.filter(item =>
+                    initialLetter === '*' || item.title[0] === initialLetter
+                ).slice(offset, offset + 100);
+            } else {
+                data.results = array.filter(item =>
+                    item.id == id
+                ).slice(offset, offset + 100);
+            }
+        } else {
+            array.sort((n1, n2) => {
+                if (n1.name > n2.name) {
+                    return 1;
+                }
+                if (n1.name < n2.name) {
+                    return -1;
+                }
+                return 0;
+            });
+            if (type === 'characters' || type === 'events') {
+                data.results = array.filter(item =>
+                    initialLetter === '*' || item.name[0] === initialLetter
+                ).slice(offset, offset + 100);
+            } else {
+                data.results = array.filter(item =>
+                    item.id == id
+                ).slice(offset, offset + 100);
+            }
         }
+        return data;
     }
 }
