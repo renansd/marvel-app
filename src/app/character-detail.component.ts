@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { md5 } from './md5';
 import { Fetch } from './fetch.service';
 import { Character } from './character';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap, Router, NavigationCancel, Params} from '@angular/router';
 import { Location } from '@angular/common';
+import { URLSearchParams, } from '@angular/http';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
@@ -15,8 +16,8 @@ export class CharacterDetail implements OnInit {
   title = 'Marvel';
   data: Date;
   tz: string;   
-	character: Character[];
-	id: number;
+	character: any = {};
+	id: string;
 	imgPath: string;
 	size = '/portrait_xlarge.';  
   ngOnInit(): void {
@@ -25,10 +26,11 @@ export class CharacterDetail implements OnInit {
   }
   constructor(private cFetch: Fetch,
     private route: ActivatedRoute,
-    private location: Location) {
-    this.route.params.subscribe(params => {
-			this.id = +params['id'];
-		});
+    private location: Location,
+    private router: Router) {    
+    this.route.queryParams.subscribe((params: Params) => {
+      this.id = params['id'];
+    });
   }
   getCharacters(): void{
     this.data = new Date();

@@ -1,8 +1,11 @@
-<h1>{{title}}</h1>
-<h2>{{hash}}</h2>
+<form #filterForm="ngForm">
+  <select name="letterPicker" [(ngModel)]="initialLetter">
+    <option *ngFor="let letter of alphabet;" [ngValue]="letter">{{letter}}</option>
+  </select>
+</form>
 <ul class="character">
-  <li *ngFor="let character of characters">    
-    <button (click)="gotoDetail(character.id)"> {{character.name}} </button>
-  </li>
-  <button (click)="nextPage()"> Next Page </button>
+  <span> Total = {{characters.total}} </span>
+  <li *ngFor="let character of characters.results">    
+    <a href="{{'characterdetail?id=' + character.id }}"> {{character.name}} </a>
+  </li>  
 </ul>

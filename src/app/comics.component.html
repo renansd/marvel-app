@@ -1,7 +1,5 @@
-<h1>{{title}}</h1>
-<h2>{{hash}}</h2>
 <ul class="comics">
-  <li *ngFor="let comic of comics">    
-    <span >{{comic.id}}</span> {{comic.title}}
+  <li *ngFor="let comic of comics.results">    
+    <a href="{{'comicdetail?id=' + comic.id }}"> {{comic.title}} </a>
   </li>  
 </ul>

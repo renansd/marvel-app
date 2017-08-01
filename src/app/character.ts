@@ -1,15 +1,20 @@
 export class Character {
-  id: number;
-  name: string;
-  description: string;
-  thumbnail: {
-    path: string,
-    extension: string;
+  
+  total: number;
+  results: {
+    id: number;
+    name: string;
+    description: string;
+    thumbnail: {
+      path: string,
+      extension: string;
+    }
   }
 
-  constructor(id: number, name: string, description: string){
-      this.id = id;
-      this.name = name;
-      this.description = description;
+  constructor(total: number, id: number, name: string, description: string){
+    this.total = total;  
+    this.results.id = id;
+    this.results.name = name;
+    this.results.description = description;
   }
 }
