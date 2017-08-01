@@ -13,6 +13,7 @@ import { ComicDetail } from './comic-detail.component';
 import { EventDetail } from './event-detail.component';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
+import { PipeModule }    from './pipe.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule	
+    AppRoutingModule,
+    PipeModule.forRoot()	
   ],
   providers: [Fetch],
   bootstrap: [AppComponent]

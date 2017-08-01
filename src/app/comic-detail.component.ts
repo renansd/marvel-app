@@ -17,8 +17,8 @@ export class ComicDetail implements OnInit {
     data: Date;
     tz: string;   
     comic: any = {};
-    id: string;
-    imgPath: string;
+    id: string;    
+    imgPath: string;    
     size = '/portrait_xlarge.';  
   ngOnInit(): void {
     this.getComic();

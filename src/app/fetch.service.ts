@@ -13,7 +13,7 @@ export class Fetch {
     getUrl: string;      
     pubKey = 'c3e1b1ac238ba05f97c4cfc0cf8fb40a';
     priKey = 'a38f1577ceadb43d2788a8cb6cf3a8629fe4f737';
-    limit = '20';
+    limit = '100';
     constructor(private http: Http) { 
 
     }
@@ -47,11 +47,19 @@ export class Fetch {
         //this.rCharacter = new Character(1, 'Renan');       
     }
 
-    getComics(hash: string): Promise<Comic[]> {
-        this.getUrl = 'http://gateway.marvel.com/v1/public/'; 
+    getComics(hash: string, offset: string, initialLetter: string): Promise<Comic[]> {
+        this.getUrl = 'http://gateway.marvel.com/v1/public/comics?';  
         this.shash = hash + this.priKey+this.pubKey;
-        this.shash = md5(this.shash);        
-        this.getUrl = this.getUrl + 'comics?orderBy=title&limit=' 
+        this.shash = md5(this.shash);
+        if(offset != '0')
+        {
+            this.getUrl = this.getUrl + 'offset=' + offset + '&';
+        }
+        if(initialLetter && initialLetter!='*')
+        {
+            this.getUrl = this.getUrl + 'titleStartsWith=' + initialLetter + '&';
+        }        
+        this.getUrl = this.getUrl + 'orderBy=title&limit=' 
         + this.limit + '&ts=' +  hash + '&apikey=' 
         + this.pubKey + '&hash=' + this.shash;
         console.log(this.getUrl);
