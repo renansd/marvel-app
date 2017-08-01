@@ -1,6 +1,12 @@
 <form #filterForm="ngForm">
+  Filter by initial letter:
   <select name="letterPicker" [(ngModel)]="initialLetter">
     <option *ngFor="let letter of alphabet;" [ngValue]="letter">{{letter}}</option>
+  </select>
+  <br>
+  Select page:
+  <select name="rangePicker" [(ngModel)]="offset">
+    <option *ngFor="let key of characters.total | demoNumber" [ngValue]="key.off">{{key.range}}</option>
   </select>
 </form>
 <ul class="character">

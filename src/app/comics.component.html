@@ -1,3 +1,9 @@
+<form #filterForm="ngForm">
+  First letter filter: 
+  <select name="letterPicker" [(ngModel)]="initialLetter">
+    <option *ngFor="let letter of alphabet;" [ngValue]="letter">{{letter}}</option>
+  </select>
+</form>
 <ul class="comics">
   <li *ngFor="let comic of comics.results">    
     <a href="{{'comicdetail?id=' + comic.id }}"> {{comic.title}} </a>
