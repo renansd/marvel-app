@@ -6,7 +6,7 @@
   <br>
   Select page:
   <select name="rangePicker" [(ngModel)]="offset">
-    <option *ngFor="let key of characters.total | demoNumber" [ngValue]="key.off">{{key.range}}</option>
+    <option *ngFor="let key of characters.total | indexCharacter" [ngValue]="key.off">{{key.range}}</option>
   </select>
 </form>
 <ul class="character">

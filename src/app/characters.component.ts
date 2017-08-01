@@ -1,31 +1,29 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { md5 } from './md5';
 import { Fetch } from './fetch.service';
-import { Character } from './character'; 
-import {NgForm} from '@angular/forms';
-import { ActivatedRoute, ParamMap, Router, NavigationCancel, Params} from '@angular/router';
-import {Pipe, PipeTransform} from '@angular/core';
+import { Character } from './character';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute, ParamMap, Router, NavigationCancel, Params } from '@angular/router';
+import { Pipe, PipeTransform } from '@angular/core';
 import 'rxjs/add/operator/debounceTime';
 
-@Pipe({name: 'demoNumber'})
-export class DemoNumber implements PipeTransform {
-  transform(value, args:string[]) : any {
-    let res:any = [];
+@Pipe({ name: 'indexCharacter' })
+export class IndexCharacter implements PipeTransform {
+  transform(value, args: string[]): any {
+    let res: any = [];
     let limit = 100;
     let value2: number;
-    if(value%20!=0)
-    {
-      value2 = Math.floor(value/limit)+1;  
-    }else{
-      value2 = Math.floor(value/limit);
+    if (value % 20 != 0) {
+      value2 = Math.floor(value / limit) + 1;
+    } else {
+      value2 = Math.floor(value / limit);
     }
     for (let i = 0; i < value2; i++) {
-      if(i==value2-1)
-      {
-        res.push({off: i, range: (i*limit+1) + '-' + value});       
-      }else{
-        res.push({off: i, range: (i*limit+1) + '-' + ((i*limit)+limit)});       
-      }     
+      if (i == value2 - 1) {
+        res.push({ off: i, range: (i * limit + 1) + '-' + value });
+      } else {
+        res.push({ off: i, range: (i * limit + 1) + '-' + ((i * limit) + limit) });
+      }
     }
     return res;
   }
@@ -34,12 +32,12 @@ export class DemoNumber implements PipeTransform {
 @Component({
   selector: 'character',
   templateUrl: './characters.component.html',
-  styleUrls: ['./app.component.css']  
+  styleUrls: ['./app.component.css']
 })
 export class Characters implements OnInit {
   title = 'Marvel';
   data: Date;
-  tz: string; 
+  tz: string;
   hash = md5('1abcd1234');
   characters: any = {};
   character: Character;
@@ -49,60 +47,56 @@ export class Characters implements OnInit {
   initialLetter: string;
   subscription: any;
   @ViewChild('filterForm') filterForm: NgForm;
-  alphabet: string[] = ['*', 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','Y','Z'];
+  alphabet: string[] = ['*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'Z'];
   ngOnInit(): void {
     this.getCharacters();
     console.log(this.filterForm.valueChanges);
     this.subscription = this.filterForm.valueChanges.debounceTime(0);
     this.subscription.subscribe(() => {
       this.render();
-    });        
-  }
-  ngOnDestroy()
-  {
-    this.subscription.unsubscribe();
-  }  
-  constructor(private cFetch: Fetch, private router: Router, private route: ActivatedRoute) {
-    this.route.queryParams.subscribe((params: Params) => {
-      this.offset = params['off'];      
-      this.initialLetter = params['ini'];
     });
   }
-  getCharacters(): void{
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+  constructor(private cFetch: Fetch, private router: Router, private route: ActivatedRoute) {
+    this.route.queryParams.subscribe((params: Params) => {
+      this.offset = params['off'];
+      this.initialLetter = params['ini'];
+      this.pastLetter = this.initialLetter;
+      this.oldOffset = this.offset;
+    });
+  }
+  getCharacters(): void {
     this.data = new Date();
-    this.tz = this.data.getTime().toString();    
-    this.cFetch.getCharacters(this.tz, (this.offset*100).toString(), this.initialLetter).then(characters => this.characters = characters);
+    this.tz = this.data.getTime().toString();
+    this.cFetch.getCharacters(this.tz, this.offset * 100, this.initialLetter).then(characters => this.characters = characters);
   }
 
-  gotoDetail(id: number): void {    
+  gotoDetail(id: number): void {
     this.router.navigate(['characterdetail'], {
-      queryParams: {id: id}      
+      queryParams: { id: id }
     });
   }
 
   render(): void {
-    //this.router.navigateByUrl('characters?off=' + this.offset + '&ini=' + this.initialLetter);
-    //location.replace('characters?off=' + this.offset + '&ini=' + this.initialLetter);
-    if(this.pastLetter != this.initialLetter)
-    {
-      this.pastLetter = this.initialLetter;      
+    if (this.pastLetter != this.initialLetter) {
+      this.pastLetter = this.initialLetter;
+      this.offset = 0;
       this.router.navigate(['characters'], {
-        queryParams: {off: this.offset, ini: this.initialLetter}      
+        queryParams: { off: this.offset, ini: this.initialLetter }
       });
       this.getCharacters();
-      this.offset = 0;
-    }else
-    {
-      if(this.oldOffset != this.offset)
-      {
+    } else {
+      if (this.oldOffset != this.offset) {
         this.oldOffset = this.offset;
         this.router.navigate(['characters'], {
-          queryParams: {off: this.offset, ini: this.initialLetter}      
+          queryParams: { off: this.offset, ini: this.initialLetter }
         });
         this.getCharacters();
       }
-      
-    }    
+
+    }
     console.log('off=' + this.offset + "&ini=" + this.initialLetter + "&PASTELETTER=" + this.pastLetter);
-  } 
+  }
 }
