@@ -30,6 +30,7 @@ export class EventDetail implements OnInit {
     private router: Router) {    
     this.route.queryParams.subscribe((params: Params) => {
       this.id = params['id'];
+      console.log(params['id']);
     });
   }
   getEvent(): void{

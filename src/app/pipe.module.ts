@@ -1,10 +1,12 @@
 import { NgModule }      from '@angular/core';
-import { DemoNumber } from './characters.component'
+import { IndexCharacter } from './characters.component'
+import { IndexComic } from './comics.component'
+import { IndexEvent } from './events.component'
 
  @NgModule({
      imports:        [],
-     declarations:   [DemoNumber],
-     exports:        [DemoNumber],
+     declarations:   [IndexCharacter, IndexComic, IndexEvent],
+     exports:        [IndexCharacter, IndexComic, IndexEvent],
  })
 
  export class PipeModule {
