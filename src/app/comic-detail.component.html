@@ -1,9 +1,24 @@
-<ul class="comic">
-  <li *ngFor="let comic of comic.results">
-    <span>{{comic.id}}</span>    
-    <span>{{comic.name}}</span>
-    <span>{{comic.description}}</span>
-    <span>{{comic.total}}</span>
-    <img src="{{comic.thumbnail.path + size + comic.thumbnail.extension}}">    
-  </li>  
-</ul>
+<div class="info-box bg-light-blue" style="width: 40%; min-width: 300px; max-width: 500px;margin:auto">
+  <div class="box-body">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let comic of comic.results" style="list-style-type:none">
+        <div style="float:none;text-align: center"><img style="border:5px solid #3c8dbc" src="{{comic.thumbnail.path + size + comic.thumbnail.extension}}" ></div> 
+        <br>
+        <div style="color: #3c8dbc; font-family: 'Kanit', sans-serif;">
+        <span>ID: {{comic.id}}</span><br><br>    
+        <span>Title: {{comic.title}}</span><br><br>  
+        <span>Description: {{comic.description}}</span><br><br>
+        <span>Issue: {{comic.issueNumber}}</span><br><br>
+        <span>Number of pages: {{comic.pageCount}}</span><br><br>      
+        <span>Characters: </span>
+        <ul>
+          <li *ngFor="let appear of comic.characters.items">
+            <span>{{appear.name}}</span>
+          </li>
+        </ul>
+        </div>
+      </li>  
+    </ul>
+  </div>
+</div>
+

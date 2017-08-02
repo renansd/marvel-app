@@ -14,8 +14,9 @@ export class Fetch {
     pubKey = 'c3e1b1ac238ba05f97c4cfc0cf8fb40a';
     priKey = 'a38f1577ceadb43d2788a8cb6cf3a8629fe4f737';
     limit = '100';
+    status: number;
     constructor(private http: Http) {
-
+        this.status = 1;
     }
     getCharacters(hash: string, offset: number, initialLetter: string): Promise<Character[]> {
         this.getUrl = 'http://gateway.marvel.com/v1/public/characters?';
@@ -39,16 +40,25 @@ export class Fetch {
                     response = response.json();
                     console.log(response);
                     if (response.code == '200') {
+                        this.status = 1;
                         const result: Character[] = response.data;
                         this.saveLocalStorage('characters', response.data.results);
                         resolve(result);
                     } else {
+                        if (this.status === 1) {
+                            alert("Connection with server failed. Offline mode is on.");
+                            this.status = 0;
+                        }
                         const result = this.loadLocalStorage('characters', offset, initialLetter, '0');
                         resolve(result);
                     }
 
                 })
                 .catch(err => {
+                    if (this.status === 1) {
+                        alert("Connection with server failed. Offline mode is on.");
+                        this.status = 0;
+                    }
                     const result = this.loadLocalStorage('characters', offset, initialLetter, '0');
                     resolve(result);
                 });
@@ -77,15 +87,24 @@ export class Fetch {
                 .then((response: any) => {
                     response = response.json();
                     if (response.code == '200') {
+                        this.status = 1;
                         const result: Comic[] = response.data;
                         this.saveLocalStorage('comics', response.data.results);
                         resolve(result);
                     } else {
+                        if (this.status === 1) {
+                            alert("Connection with server failed. Offline mode is on.");
+                            this.status = 0;
+                        }
                         const result = this.loadLocalStorage('comics', offset, initialLetter, '0');
                         resolve(result);
                     }
                 })
                 .catch(err => {
+                    if (this.status === 1) {
+                        alert("Connection with server failed. Offline mode is on.");
+                        this.status = 0;
+                    }
                     const result = this.loadLocalStorage('comics', offset, initialLetter, '0');
                     resolve(result);
                 });
@@ -112,15 +131,24 @@ export class Fetch {
                 .then((response: any) => {
                     response = response.json();
                     if (response.code == '200') {
+                        this.status = 1;
                         const result: Event[] = response.data;
                         this.saveLocalStorage('events', response.data.results);
                         resolve(result);
                     } else {
+                        if (this.status === 1) {
+                            alert("Connection with server failed. Offline mode is on.");
+                            this.status = 0;
+                        }
                         const result = this.loadLocalStorage('events', offset, initialLetter, '0');
                         resolve(result);
                     }
                 })
                 .catch(err => {
+                    if (this.status === 1) {
+                        alert("Connection with server failed. Offline mode is on.");
+                        this.status = 0;
+                    }
                     const result = this.loadLocalStorage('events', offset, initialLetter, '0');
                     resolve(result);
                 });
@@ -141,15 +169,16 @@ export class Fetch {
                 .then((response: any) => {
                     response = response.json();
                     if (response.code == '200') {
+                        this.status = 1;
                         const result: Character[] = response.data;
                         this.saveLocalStorage('characters', response.data.results);
                         resolve(result);
-                    } else {
+                    } else {                        
                         const result = this.loadLocalStorage('character', 0, '*', id);
                         resolve(result);
                     }
                 })
-                .catch(err => {
+                .catch(err => {                    
                     const result = this.loadLocalStorage('character', 0, '*', id);
                     resolve(result);
                 });
@@ -170,15 +199,16 @@ export class Fetch {
                 .then((response: any) => {
                     response = response.json();
                     if (response.code == '200') {
+                        this.status = 1;
                         const result: Comic[] = response.data;
                         this.saveLocalStorage('comics', response.data.results);
                         resolve(result);
-                    } else {
+                    } else {                        
                         const result = this.loadLocalStorage('comic', 0, '*', id);
                         resolve(result);
                     }
                 })
-                .catch(err => {
+                .catch(err => {                    
                     const result = this.loadLocalStorage('comic', 0, '*', id);
                     resolve(result);
                 });
@@ -199,15 +229,16 @@ export class Fetch {
                 .then((response: any) => {
                     response = response.json();
                     if (response.code == '200') {
+                        this.status = 1;
                         const result: Event[] = response.data;
                         this.saveLocalStorage('events', response.data.results);
                         resolve(result);
-                    } else {
+                    } else {                        
                         const result = this.loadLocalStorage('event', 0, '*', id);
                         resolve(result);
                     }
                 })
-                .catch(err => {
+                .catch(err => {                    
                     const result = this.loadLocalStorage('event', 0, '*', id);
                     resolve(result);
                 });
@@ -216,7 +247,7 @@ export class Fetch {
 
     saveLocalStorage(type: string, data: any): void {
         let idx;
-        let array: any[];        
+        let array: any[];
         if (!localStorage[type]) {
             localStorage[type] = '[]';
         } else {
@@ -232,18 +263,18 @@ export class Fetch {
             } else {
                 array.push(data[i]);
             }
-        }        
-        localStorage[type] = JSON.stringify(array);        
+        }
+        localStorage[type] = JSON.stringify(array);
     }
 
     loadLocalStorage(type: string, offset: number, initialLetter: string, id: string): any[] {
         let data: any = {};
-        let results: any[];        
+        let results: any[];
         let array: any[];
-        if (type === 'character' || type === 'comic' || type == 'event') array = JSON.parse(localStorage[type+'s']);
+        if (type === 'character' || type === 'comic' || type == 'event') array = JSON.parse(localStorage[type + 's']);
         else array = JSON.parse(localStorage[type]);
         data.total = array.length;
-        if (type === 'comics' || type === 'comic') {
+        if (type === 'comics' || type === 'comic' || type === 'events' || type === 'event') {
             array.sort((n1, n2) => {
                 if (n1.title > n2.title) {
                     return 1;
@@ -253,7 +284,7 @@ export class Fetch {
                 }
                 return 0;
             });
-            if (type === 'comics') {
+            if (type === 'comics' || type === 'events') {
                 data.results = array.filter(item =>
                     initialLetter === '*' || item.title[0] === initialLetter
                 ).slice(offset, offset + 100);
@@ -272,7 +303,7 @@ export class Fetch {
                 }
                 return 0;
             });
-            if (type === 'characters' || type === 'events') {
+            if (type === 'characters') {
                 data.results = array.filter(item =>
                     initialLetter === '*' || item.name[0] === initialLetter
                 ).slice(offset, offset + 100);

@@ -40,15 +40,18 @@ export class Events implements OnInit {
   events: any = {};
   oldOffset: number;
   offset: number;
+  page: number;
+  loads: boolean;
   pastLetter: string;
   initialLetter: string;
   subscription: any;
   @ViewChild('filterForm') filterForm: NgForm;
-  alphabet: string[] = ['*', 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','Y','Z'];
+  alphabet: string[] = ['*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'W', 'Y', 'Z'];
   ngOnInit(): void {
     this.getEvents();
     this.subscription = this.filterForm.valueChanges.debounceTime(0);
     this.subscription.subscribe(() => {
+      this.loads = false;
       this.render();
     });    
   }
@@ -60,6 +63,9 @@ export class Events implements OnInit {
       else this.initialLetter = '*';
       this.pastLetter = this.initialLetter;
       this.oldOffset = this.offset;
+      this.loads = false;
+      this.page = Number(this.offset);
+      this.page +=1;
     });
   }
   render(): void {
@@ -73,6 +79,8 @@ export class Events implements OnInit {
     } else {
       if (this.oldOffset != this.offset) {
         this.oldOffset = this.offset;
+        this.page = Number(this.offset);
+        this.page +=1;
         this.router.navigate(['events'], {
           queryParams: { off: this.offset, ini: this.initialLetter }
         });
@@ -84,6 +92,9 @@ export class Events implements OnInit {
   getEvents(): void{
     this.data = new Date();
     this.tz = this.data.getTime().toString();
-    this.cFetch.getEvents(this.tz, this.offset*100, this.initialLetter).then(events => this.events = events);
+    this.cFetch.getEvents(this.tz, this.offset*100, this.initialLetter).then(events => {
+      this.events = events;     
+      this.loads = true;
+    });
   }  
 }

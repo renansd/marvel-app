@@ -2,6 +2,14 @@
  * Skin: Blue
  * ----------
  */
+.skin-blue-light .navbar.center .navbar-inner {
+    text-align: center;
+}
+
+.skin-blue-light .navbar.center .navbar-inner .nav {
+    display:inline-block;
+    float: none;
+}
 .skin-blue .main-header .navbar {
   background-color: #3c8dbc;
 }

@@ -38,9 +38,11 @@ export class Comics implements OnInit {
   data: Date;
   tz: string;
   comics: any = {};
-  alphabet: string[] = ['*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'Z'];
+  alphabet: string[] = ['*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'W', 'Y', 'Z'];
   oldOffset: number;
   offset: number;
+  page: number;
+  loads: boolean;
   pastLetter: string;
   initialLetter: string;
   subscription: any;
@@ -49,6 +51,7 @@ export class Comics implements OnInit {
     this.getComics();
     this.subscription = this.filterForm.valueChanges.debounceTime(0);
     this.subscription.subscribe(() => {
+      this.loads = false;
       this.render();
     });
   }
@@ -60,6 +63,9 @@ export class Comics implements OnInit {
       else this.initialLetter = '*';
       this.pastLetter = this.initialLetter;
       this.oldOffset = this.offset;
+      this.loads = false;
+      this.page = Number(this.offset);
+      this.page +=1;
     });
   }
   render(): void {
@@ -73,6 +79,8 @@ export class Comics implements OnInit {
     } else {
       if (this.oldOffset != this.offset) {
         this.oldOffset = this.offset;
+        this.page = Number(this.offset);
+        this.page +=1;
         this.router.navigate(['comics'], {
           queryParams: { off: this.offset, ini: this.initialLetter }
         });
@@ -85,6 +93,9 @@ export class Comics implements OnInit {
   getComics(): void {
     this.data = new Date();
     this.tz = this.data.getTime().toString();
-    this.cFetch.getComics(this.tz, this.offset * 100, this.initialLetter).then(comics => this.comics = comics);
+    this.cFetch.getComics(this.tz, this.offset * 100, this.initialLetter).then(comics => {
+      this.comics = comics;
+      this.loads = true;
+    });
   }
 }

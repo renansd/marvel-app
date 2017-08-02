@@ -4,9 +4,14 @@ export class Comic {
     id: number;
     title: string;
     description: string;
+    issueNumber: number;
+    pageCount: number;
     thumbnail: {
       path: string;
       extension: string;
+    }
+    characters: {
+      items: any[];
     }
   }    
 

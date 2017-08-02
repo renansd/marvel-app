@@ -1,9 +1,21 @@
-<ul class="character">
-  <li *ngFor="let character of character.results">
-    <span>{{character.id}}</span>    
-    <span>{{character.name}}</span>
-    <span>{{character.description}}</span>
-    <span>{{character.total}}</span>
-    <img src="{{character.thumbnail.path + size + character.thumbnail.extension}}">    
-  </li>  
-</ul>
+<div class="info-box bg-light-blue" style="width: 40%; min-width: 300px; max-width: 500px;margin:auto">
+  <div class="box-body">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let character of character.results" style="list-style-type:none">
+        <div style="float:none;text-align: center"><img style="border:5px solid #3c8dbc" src="{{character.thumbnail.path + size + character.thumbnail.extension}}" ></div> 
+        <br>
+        <div style="color: #3c8dbc; font-family: 'Kanit', sans-serif;">
+        <span>ID: {{character.id}}</span><br><br>    
+        <span>Name: {{character.name}}</span><br><br>  
+        <span>Description: {{character.description}}</span><br><br>  
+        <span>Appearances: </span>
+        <ul>
+          <li *ngFor="let appear of character.series.items">
+            <span>{{appear.name}}</span>
+          </li>
+        </ul>
+        </div>
+      </li>  
+    </ul>
+  </div>
+</div>

@@ -9,6 +9,9 @@ export class Character {
       path: string,
       extension: string;
     }
+    series: {
+      items: any[];
+    }
   }
 
   constructor(total: number, id: number, name: string, description: string){

@@ -1,16 +1,40 @@
 <form #filterForm="ngForm">
-  Filter by initial letter:
-  <select name="letterPicker" [(ngModel)]="initialLetter">
-    <option *ngFor="let letter of alphabet;" [ngValue]="letter">{{letter}}</option>
-  </select>
-  <br>
-  Select page:
-  <select name="rangePicker" [(ngModel)]="offset">
-    <option *ngFor="let key of characters.total | indexCharacter" [ngValue]="key.off">{{key.range}}</option>
-  </select>
+  <div class="box">
+    <div class="box-body" style="text-align: center">    
+      Filter by initial letter:
+      <select name="letterPicker" [(ngModel)]="initialLetter">
+        <option *ngFor="let letter of alphabet;" [ngValue]="letter">{{letter}}</option>
+      </select>       
+    </div>
+  </div>
+  <div class="info-box bg-light-blue" style="width: 30%;min-width: 300px; margin: auto">    
+    <div><h2 style="font-family: Bowlby One SC, cursive; text-align: center;">Characters</h2></div>
+    <div class="box-body" style="text-align: center;">
+      <div class="info-box bg-light-blue">        
+        <ul class="list-group" style="list-style-type:none"> 
+          <li class="list-group-item" style="padding: 3px 10px;width: 98%; margin: auto" *ngFor="let character of characters.results">    
+            <a href="{{'characterdetail?id=' + character.id }}"><span class="info-box-text">{{character.name}}</span> </a>
+          </li>  
+        </ul>
+      </div>
+    </div>
+    <div *ngIf="loads;else other">
+    </div>
+    <ng-template #other>  
+      <div class="overlay">    
+        <i class="fa fa-refresh fa-spin"></i>     
+      </div>
+    </ng-template>
+  </div>
+  <div class="box">
+    <div class="box-body">
+      Page: {{page}}       
+      <div style="float: right;"> 
+        Select page:
+        <select name="rangePicker" [(ngModel)]="offset">
+          <option *ngFor="let key of characters.total | indexCharacter" [ngValue]="key.off">{{key.range}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
 </form>
-<ul class="character"> 
-  <li *ngFor="let character of characters.results">    
-    <a href="{{'characterdetail?id=' + character.id }}"> {{character.name}} </a>
-  </li>  
-</ul>
