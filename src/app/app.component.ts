@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'my-app',
     template: `
-    <div style="max-height:100%">    
-    
+    <div>   
         <body class="skin-blue layout-top-nav" background="/assets/background2.jpg" background-repeat="no repeat">
-            <div style="float:none;text-align: center"><img src="../assets/logom.png" align="middle"></div>
+            <div style="float:none;text-align: center"><img src="../assets/logom.png" align="middle" style="max-width: 100%;width:auto;height:auto"></div>
             <header class="main-header">
+                <div class="box">
                 <nav class="navbar navbar-default" style="float:none;text-align: center">
                 <div style="display: inline-block;float:none; position: center; text-align: center;margin: auto">
                     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -20,7 +20,8 @@ import { Component } from '@angular/core';
                 </div>
                 <!-- /.container-fluid -->
                 </nav>
-            </header>
+                </div>
+            </header><br>
             <div style="position: center">
             <router-outlet></router-outlet>
             </div>

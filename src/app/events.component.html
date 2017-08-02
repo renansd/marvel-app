@@ -1,19 +1,19 @@
 <form #filterForm="ngForm">
   <div class="box">
-    <div class="box-body">
+    <div class="box-body" style="text-align: center">
       First letter filter:
       <select name="letterPicker" [(ngModel)]="initialLetter">
         <option *ngFor="let letter of alphabet;" [ngValue]="letter">{{letter}}</option>
       </select>
     </div>
   </div>
-  <div class="info-box bg-light-blue" style="width: 30%; margin: auto">    
+  <div class="info-box bg-light-blue" style="width: 30%;min-width: 300px; margin: auto">    
     <div><h2 style="font-family: Bowlby One SC, cursive; text-align: center;">Events</h2></div>
     <div class="box-body" style="text-align: center;">
       <div class="info-box bg-light-blue">
         <ul class="list-group" style="list-style-type:none">
           <li class="list-group-item" style="padding: 3px 10px; width: 98%; margin: auto" *ngFor="let event of events.results">
-            <a href="{{'eventdetail?id=' + event.id }}"> {{event.title}} </a>
+            <a href="{{'eventdetail?id=' + event.id }}"> <span class="info-box-text">{{event.title}}</span></a>
           </li>
         </ul>
       </div>

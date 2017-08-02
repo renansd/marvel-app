@@ -1,13 +1,13 @@
 <form #filterForm="ngForm">
   <div class="box">
-    <div class="box-body">
+    <div class="box-body" style="text-align: center">
       First letter filter:
       <select name="letterPicker" [(ngModel)]="initialLetter">
         <option *ngFor="let letter of alphabet;" [ngValue]="letter">{{letter}}</option>
       </select>
     </div>
   </div>
-  <div class="info-box bg-light-blue" style="width: 30%; margin: auto">
+  <div class="info-box bg-light-blue" style="width: 30%;min-width: 300px; margin: auto">
     <div>
       <h2 style="font-family: Bowlby One SC, cursive; text-align: center;">Comics</h2>
     </div>

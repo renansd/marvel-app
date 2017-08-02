@@ -10,6 +10,15 @@ export class Event {
       path: string;
       extension: string;
     }
+    characters: {
+      items: any[];
+    }
+    next: {
+      name: string;
+    }
+    previous: {
+      name: string;
+    }    
   }    
 
   constructor(total:number, id: number, name:string, description: string, start: Date, end: Date){

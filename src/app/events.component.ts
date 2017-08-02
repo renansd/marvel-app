@@ -46,7 +46,7 @@ export class Events implements OnInit {
   initialLetter: string;
   subscription: any;
   @ViewChild('filterForm') filterForm: NgForm;
-  alphabet: string[] = ['*', 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','Y','Z'];
+  alphabet: string[] = ['*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'W', 'Y', 'Z'];
   ngOnInit(): void {
     this.getEvents();
     this.subscription = this.filterForm.valueChanges.debounceTime(0);
@@ -93,7 +93,7 @@ export class Events implements OnInit {
     this.data = new Date();
     this.tz = this.data.getTime().toString();
     this.cFetch.getEvents(this.tz, this.offset*100, this.initialLetter).then(events => {
-      this.events = events;
+      this.events = events;     
       this.loads = true;
     });
   }  

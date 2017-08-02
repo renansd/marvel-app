@@ -1,11 +1,26 @@
-<ul class="event">
-  <li *ngFor="let event of event.results">
-    <span>{{event.id}}</span>    
-    <span>{{event.name}}</span>
-    <span>{{event.description}}</span>
-    <span>{{event.total}}</span>
-    <span>{{event.start}}</span>
-    <span>{{event.end}}</span>
-    <img src="{{event.thumbnail.path + size + event.thumbnail.extension}}">    
-  </li>  
-</ul>
+<div class="info-box bg-light-blue" style="width: 40%; min-width: 300px; max-width: 500px;margin:auto">
+  <div class="box-body">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let event of event.results" style="list-style-type:none">
+        <div style="float:none;text-align: center"><img style="border:5px solid #3c8dbc" src="{{event.thumbnail.path + size + event.thumbnail.extension}}" ></div> 
+        <br>
+        <div style="color: #3c8dbc; font-family: 'Kanit', sans-serif;">
+        <span>ID: {{event.id}}</span><br><br>    
+        <span>Title: {{event.title}}</span><br><br>  
+        <span>Description: {{event.description}}</span><br><br>
+        <span>Event start date: {{event.start}}</span><br><br>
+        <span>Event end date: {{event.start}}</span><br><br>
+        <span>Previous event: {{event.previous.name}}</span><br><br> 
+        <span>Next event: {{event.next.name}}</span><br><br>       
+        <span>Characters: </span>
+        <ul>
+          <li *ngFor="let appear of event.characters.items">
+            <span>{{appear.name}}</span>
+          </li>
+        </ul>
+        </div>
+      </li>  
+    </ul>
+  </div>
+</div>
+

@@ -49,7 +49,7 @@ export class Characters implements OnInit {
   subscription: any;
   page: number;
   @ViewChild('filterForm') filterForm: NgForm;
-  alphabet: string[] = ['*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'Z'];
+  alphabet: string[] = ['*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'W', 'Y', 'Z'];
   ngOnInit(): void {
     this.getCharacters();
     console.log(this.filterForm.valueChanges);
