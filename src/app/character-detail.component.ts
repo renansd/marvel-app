@@ -36,6 +36,9 @@ export class CharacterDetail implements OnInit {
       this.statusDescription = true;
     });
   }
+  goBack(): void {
+		this.location.back();
+	}
   getCharacters(): void {
     this.data = new Date();
     this.tz = this.data.getTime().toString();

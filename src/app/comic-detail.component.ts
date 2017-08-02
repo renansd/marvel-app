@@ -24,6 +24,9 @@ export class ComicDetail implements OnInit {
     this.getComic();
     console.log("OLHA AQUI <<<<<<<<<<>>>>>>>>>" + this.id);    
   }
+  goBack(): void {
+		this.location.back();
+	}
   constructor(private cFetch: Fetch,
     private route: ActivatedRoute,
     private location: Location,
