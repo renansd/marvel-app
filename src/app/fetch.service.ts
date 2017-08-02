@@ -13,9 +13,8 @@ export class Fetch {
     getUrl: string;
     pubKey = 'c3e1b1ac238ba05f97c4cfc0cf8fb40a';
     priKey = 'a38f1577ceadb43d2788a8cb6cf3a8629fe4f737';
-    limit = '100';
-    constructor(private http: Http) {
-
+    limit = '100';    
+    constructor(private http: Http) {        
     }
     getCharacters(hash: string, offset: number, initialLetter: string): Promise<Character[]> {
         this.getUrl = 'http://gateway.marvel.com/v1/public/characters?';
@@ -43,12 +42,14 @@ export class Fetch {
                         this.saveLocalStorage('characters', response.data.results);
                         resolve(result);
                     } else {
+                        alert("Connection with server failed. Offline mode is on.");
                         const result = this.loadLocalStorage('characters', offset, initialLetter, '0');
                         resolve(result);
                     }
 
                 })
                 .catch(err => {
+                    alert("Connection with server failed. Offline mode is on.");
                     const result = this.loadLocalStorage('characters', offset, initialLetter, '0');
                     resolve(result);
                 });

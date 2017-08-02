@@ -42,17 +42,19 @@ export class Characters implements OnInit {
   characters: any = {};
   character: Character;
   oldOffset: number;
+  loads: boolean;
   offset: number;
   pastLetter: string;
   initialLetter: string;
   subscription: any;
+  page: number;
   @ViewChild('filterForm') filterForm: NgForm;
   alphabet: string[] = ['*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'Z'];
   ngOnInit(): void {
     this.getCharacters();
     console.log(this.filterForm.valueChanges);
     this.subscription = this.filterForm.valueChanges.debounceTime(0);
-    this.subscription.subscribe(() => {
+    this.subscription.subscribe(() => {      
       this.render();
     });
   }
@@ -67,12 +69,26 @@ export class Characters implements OnInit {
       else this.initialLetter = '*';
       this.pastLetter = this.initialLetter;
       this.oldOffset = this.offset;
+      this.page = Number(this.offset);
+      this.page +=1;
+      this.loads = false;
     });
   }
   getCharacters(): void {
+    this.loads = false;
     this.data = new Date();
     this.tz = this.data.getTime().toString();
-    this.cFetch.getCharacters(this.tz, this.offset * 100, this.initialLetter).then(characters => this.characters = characters);
+    this.cFetch.getCharacters(this.tz, this.offset * 100, this.initialLetter).then(characters => { 
+      this.characters = characters;
+      this.loads = true;
+      if(!characters)
+        {
+          alert("Connection with server failed. Offline mode is on.");
+          this.offset=0;
+          this.initialLetter = '*';
+          this.getCharacters;
+        }
+    });
   }
 
   gotoDetail(id: number): void {
@@ -92,6 +108,8 @@ export class Characters implements OnInit {
     } else {
       if (this.oldOffset != this.offset) {
         this.oldOffset = this.offset;
+        this.page = Number(this.offset);
+        this.page +=1;
         this.router.navigate(['characters'], {
           queryParams: { off: this.offset, ini: this.initialLetter }
         });
@@ -100,5 +118,5 @@ export class Characters implements OnInit {
 
     }
     console.log('off=' + this.offset + "&ini=" + this.initialLetter + "&PASTELETTER=" + this.pastLetter);
-  }
+  }  
 }
