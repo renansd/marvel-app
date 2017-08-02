@@ -33,6 +33,9 @@ export class EventDetail implements OnInit {
       console.log(params['id']);
     });
   }
+  goBack(): void {
+		this.location.back();
+	}
   getEvent(): void{
     this.data = new Date();
     this.tz = this.data.getTime().toString();   

@@ -14,29 +14,29 @@
     <div class="box-body" style="text-align: center;">
       <div class="info-box bg-light-blue">
         <ul class="list-group" style="list-style-type:none">
+          <div *ngIf="loads;else other">
+          </div>
+          <ng-template #other>
+            <div class="overlay">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+          </ng-template>
           <li class="list-group-item" style="padding: 3px 10px; width: 98%; margin: auto" *ngFor="let comic of comics.results">
             <a href="{{'comicdetail?id=' + comic.id }}"> {{comic.title}} </a>
           </li>
         </ul>
       </div>
     </div>
-    <div *ngIf="loads;else other">
-    </div>
-    <ng-template #other>  
-      <div class="overlay">    
-        <i class="fa fa-refresh fa-spin"></i>     
-      </div>
-    </ng-template>
   </div>
   <div class="box">
     <div class="box-body">
-      Page: {{page}}       
-      <div style="float: right;"> 
+      Page: {{page}}
+      <div style="float: right;">
         Select page:
         <select name="rangePicker" [(ngModel)]="offset">
           <option *ngFor="let key of comics.total | indexComic" [ngValue]="key.off">{{key.range}}</option>
         </select>
       </div>
     </div>
-  </div>  
+  </div>
 </form>
