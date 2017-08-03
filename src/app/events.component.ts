@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { md5 } from './md5';
 import { Fetch } from './fetch.service';
 import { Event } from './event';
-import {NgForm} from '@angular/forms'; 
-import { ActivatedRoute, ParamMap, Router, NavigationCancel, Params} from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute, ParamMap, Router, NavigationCancel, Params } from '@angular/router';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'indexEvent' })
@@ -31,12 +31,12 @@ export class IndexEvent implements PipeTransform {
 @Component({
   selector: 'events',
   templateUrl: './events.component.html',
-  styleUrls: ['./app.component.css']  
+  styleUrls: ['./app.component.css']
 })
 export class Events implements OnInit {
   title = 'Marvel';
   data: Date;
-  tz: string;   
+  tz: string;
   events: any = {};
   oldOffset: number;
   offset: number;
@@ -53,19 +53,19 @@ export class Events implements OnInit {
     this.subscription.subscribe(() => {
       this.loads = false;
       this.render();
-    });    
+    });
   }
   constructor(private cFetch: Fetch, private router: Router, private route: ActivatedRoute) {
     this.route.queryParams.subscribe((params: Params) => {
-      if(params['off']) this.offset = params['off'];
+      if (params['off']) this.offset = params['off'];
       else this.offset = 0;
-      if(params['ini']) this.initialLetter = params['ini'];
+      if (params['ini']) this.initialLetter = params['ini'];
       else this.initialLetter = '*';
       this.pastLetter = this.initialLetter;
       this.oldOffset = this.offset;
       this.loads = false;
       this.page = Number(this.offset);
-      this.page +=1;
+      this.page += 1;
     });
   }
   render(): void {
@@ -80,21 +80,26 @@ export class Events implements OnInit {
       if (this.oldOffset != this.offset) {
         this.oldOffset = this.offset;
         this.page = Number(this.offset);
-        this.page +=1;
+        this.page += 1;
         this.router.navigate(['events'], {
           queryParams: { off: this.offset, ini: this.initialLetter }
         });
         this.getEvents();
       }
     }
-    console.log('off=' + this.offset + "&ini=" + this.initialLetter + "&PASTELETTER=" + this.pastLetter);
   }
-  getEvents(): void{
+  getEvents(): void {
     this.data = new Date();
     this.tz = this.data.getTime().toString();
-    this.cFetch.getEvents(this.tz, this.offset*100, this.initialLetter).then(events => {
-      this.events = events;     
+    this.cFetch.getEvents(this.tz, this.offset * 100, this.initialLetter).then(events => {
+      this.events = events;
+      if (!events) {
+        alert("Connection with server failed. Offline mode is on.");
+        this.offset = 0;
+        this.initialLetter = '*';
+        this.events;
+      }
       this.loads = true;
     });
-  }  
+  }
 }

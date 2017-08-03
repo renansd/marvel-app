@@ -24,7 +24,6 @@ export class CharacterDetail implements OnInit {
   size = '/portrait_xlarge.';
   ngOnInit(): void {
     this.getCharacters();
-    console.log("OLHA AQUI <<<<<<<<<<>>>>>>>>>" + this.id);
   }
   constructor(private cFetch: Fetch,
     private route: ActivatedRoute,
@@ -37,19 +36,13 @@ export class CharacterDetail implements OnInit {
     });
   }
   goBack(): void {
-		this.location.back();
-	}
+    this.location.back();
+  }
   getCharacters(): void {
     this.data = new Date();
     this.tz = this.data.getTime().toString();
     this.cFetch.getCharacter(this.tz, this.id).then(character => {
       this.character = character;      
-      if (this.character[0].description == undefined) {        
-        this.statusDescription = false;
-      }      
-      if (this.character[0].series == undefined) {
-        this.statusSeries = false;
-      }      
     });
   }
 }

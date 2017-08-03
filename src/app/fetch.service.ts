@@ -24,7 +24,6 @@ export class Fetch {
         this.shash = hash + this.priKey + this.pubKey;
         this.shash = md5(this.shash);
         if (offset && offset !== 0) {
-            console.log("OLHA EU AQUI" + offset);
             this.getUrl = this.getUrl + 'offset=' + offset + '&';
         }
         if (initialLetter && initialLetter != '*') {
@@ -33,13 +32,11 @@ export class Fetch {
         this.getUrl = this.getUrl + 'orderBy=name&limit='
             + this.limit + '&ts=' + hash + '&apikey='
             + this.pubKey + '&hash=' + this.shash;
-        console.log(this.getUrl);
         return new Promise<Character[]>((resolve, reject) => {
             this.http.get(this.getUrl)
                 .toPromise()
                 .then((response: any) => {
-                    response = response.json();
-                    console.log(response);
+                    response = response.json();                    
                     if (response.code == '200') {
                         this.status = 1;
                         const result: Character[] = response.data;
@@ -55,7 +52,8 @@ export class Fetch {
                     }
 
                 })
-                .catch(err => {
+                .catch(err => {                    
+                    console.log(err);
                     if (this.status === 1) {
                         alert("Connection with server failed. Offline mode is on. Some data may not be avaiable.");
                         this.status = 0;
@@ -76,14 +74,12 @@ export class Fetch {
         }
         if (initialLetter && initialLetter != '*') {
             this.getUrl = this.getUrl + 'titleStartsWith=' + initialLetter + '&';
-        }        
+        }
         this.getUrl = this.getUrl + 'orderBy=title&limit='
             + this.limit + '&ts=' + hash + '&apikey='
-            + this.pubKey + '&hash=' + this.shash;
-        console.log(this.getUrl);
-        console.log(hash);
+            + this.pubKey + '&hash=' + this.shash;        
         return new Promise<Comic[]>((resolve, reject) => {
-            this.http.get(this.getUrl)                
+            this.http.get(this.getUrl)
                 .toPromise()
                 .then((response: any) => {
                     response = response.json();
@@ -102,6 +98,7 @@ export class Fetch {
                     }
                 })
                 .catch(err => {
+                    console.log(err);
                     if (this.status === 1) {
                         alert("Connection with server failed. Offline mode is on. Some data may not be avaiable.");
                         this.status = 0;
@@ -125,7 +122,6 @@ export class Fetch {
         this.getUrl = this.getUrl + 'limit='
             + this.limit + '&ts=' + hash + '&apikey='
             + this.pubKey + '&hash=' + this.shash;
-        console.log(this.getUrl);
         return new Promise<Event[]>((resolve, reject) => {
             this.http.get(this.getUrl)
                 .toPromise()
@@ -146,6 +142,7 @@ export class Fetch {
                     }
                 })
                 .catch(err => {
+                    console.log(err);
                     if (this.status === 1) {
                         alert("Connection with server failed. Offline mode is on. Some data may not be avaiable.");
                         this.status = 0;
@@ -162,8 +159,7 @@ export class Fetch {
         this.shash = md5(this.shash);
         this.getUrl = this.getUrl
             + '&ts=' + hash + '&apikey='
-            + this.pubKey + '&hash=' + this.shash;
-        console.log(this.getUrl);
+            + this.pubKey + '&hash=' + this.shash;        
         return new Promise<Character[]>((resolve, reject) => {
             this.http.get(this.getUrl)
                 .toPromise()
@@ -174,12 +170,12 @@ export class Fetch {
                         const result: Character[] = response.data;
                         this.saveLocalStorage('characters', response.data.results);
                         resolve(result);
-                    } else {                        
+                    } else {
                         const result = this.loadLocalStorage('character', 0, '*', id);
                         resolve(result);
                     }
                 })
-                .catch(err => {                    
+                .catch(err => {
                     const result = this.loadLocalStorage('character', 0, '*', id);
                     resolve(result);
                 });
@@ -192,8 +188,7 @@ export class Fetch {
         this.shash = md5(this.shash);
         this.getUrl = this.getUrl
             + '&ts=' + hash + '&apikey='
-            + this.pubKey + '&hash=' + this.shash;
-        console.log(this.getUrl);
+            + this.pubKey + '&hash=' + this.shash;        
         return new Promise<Comic[]>((resolve, reject) => {
             this.http.get(this.getUrl)
                 .toPromise()
@@ -204,12 +199,12 @@ export class Fetch {
                         const result: Comic[] = response.data;
                         this.saveLocalStorage('comics', response.data.results);
                         resolve(result);
-                    } else {                        
+                    } else {
                         const result = this.loadLocalStorage('comic', 0, '*', id);
                         resolve(result);
                     }
                 })
-                .catch(err => {                    
+                .catch(err => {
                     const result = this.loadLocalStorage('comic', 0, '*', id);
                     resolve(result);
                 });
@@ -222,8 +217,7 @@ export class Fetch {
         this.shash = md5(this.shash);
         this.getUrl = this.getUrl
             + '&ts=' + hash + '&apikey='
-            + this.pubKey + '&hash=' + this.shash;
-        console.log(this.getUrl);
+            + this.pubKey + '&hash=' + this.shash;        
         return new Promise<Event[]>((resolve, reject) => {
             this.http.get(this.getUrl)
                 .toPromise()
@@ -234,12 +228,12 @@ export class Fetch {
                         const result: Event[] = response.data;
                         this.saveLocalStorage('events', response.data.results);
                         resolve(result);
-                    } else {                        
+                    } else {
                         const result = this.loadLocalStorage('event', 0, '*', id);
                         resolve(result);
                     }
                 })
-                .catch(err => {                    
+                .catch(err => {
                     const result = this.loadLocalStorage('event', 0, '*', id);
                     resolve(result);
                 });
