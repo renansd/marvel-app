@@ -2,18 +2,29 @@
   <div class="box-body">
     <ul class="list-group">
       <li class="list-group-item" *ngFor="let character of character.results" style="list-style-type:none">
-        <div style="float:none;text-align: center"><img style="border:5px solid #3c8dbc" src="{{character.thumbnail.path + size + character.thumbnail.extension}}" ></div> 
+        <div style="float:none;text-align: center"><img style="border:5px solid #3c8dbc" src="{{character.thumbnail.path + size + character.thumbnail.extension}}" onerror="this.src='/assets/imgerror.jpg';" /></div> 
         <br>
         <div style="color: #3c8dbc; font-family: 'Kanit', sans-serif;">
         <span>ID: {{character.id}}</span><br><br>    
-        <span>Name: {{character.name}}</span><br><br>  
-        <span>Description: {{character.description}}</span><br><br>  
+        <span>Name: {{character.name}}</span><br><br>
+        Description: 
+        <div *ngIf="character.description;else noDesc">
+          <span>{{character.description}}</span><br><br> 
+        </div>
+        <ng-template #noDesc>
+          No discription avaiable.<br><br>
+        </ng-template>        
         <span>Appearances: </span>
-        <ul>
-          <li *ngFor="let appear of character.series.items">
-            <span>{{appear.name}}</span>
-          </li>
-        </ul>
+        <div *ngIf="character.series.items;else noApp">
+          <ul>
+            <li *ngFor="let appear of character.series.items">
+              <span>{{appear.name}}</span>
+            </li>
+          </ul>
+        </div>
+        <ng-template #noApp>
+          None.<br><br>
+        </ng-template>        
         </div>
       </li>  
     </ul>

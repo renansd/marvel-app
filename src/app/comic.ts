@@ -13,11 +13,11 @@ export class Comic {
     characters: {
       items: any[];
     }
-  }    
+  }
 
-  constructor(total:number, id: number, name:string, description: string){
-      this.results.id = id;
-      this.results.title = name;
-      this.results.description = description;
+  constructor(total: number, id: number, name: string, description: string) {
+    this.results.id = id;
+    this.results.title = name;
+    this.results.description = description;
   }
 }

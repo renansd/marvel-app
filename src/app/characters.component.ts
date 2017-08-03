@@ -52,9 +52,8 @@ export class Characters implements OnInit {
   alphabet: string[] = ['*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'W', 'Y', 'Z'];
   ngOnInit(): void {
     this.getCharacters();
-    console.log(this.filterForm.valueChanges);
     this.subscription = this.filterForm.valueChanges.debounceTime(0);
-    this.subscription.subscribe(() => {      
+    this.subscription.subscribe(() => {
       this.render();
     });
   }
@@ -63,14 +62,14 @@ export class Characters implements OnInit {
   }
   constructor(private cFetch: Fetch, private router: Router, private route: ActivatedRoute) {
     this.route.queryParams.subscribe((params: Params) => {
-      if(params['off']) this.offset = params['off'];
+      if (params['off']) this.offset = params['off'];
       else this.offset = 0;
-      if(params['ini']) this.initialLetter = params['ini'];
+      if (params['ini']) this.initialLetter = params['ini'];
       else this.initialLetter = '*';
       this.pastLetter = this.initialLetter;
       this.oldOffset = this.offset;
       this.page = Number(this.offset);
-      this.page +=1;
+      this.page += 1;
       this.loads = false;
     });
   }
@@ -78,16 +77,15 @@ export class Characters implements OnInit {
     this.loads = false;
     this.data = new Date();
     this.tz = this.data.getTime().toString();
-    this.cFetch.getCharacters(this.tz, this.offset * 100, this.initialLetter).then(characters => { 
+    this.cFetch.getCharacters(this.tz, this.offset * 100, this.initialLetter).then(characters => {
       this.characters = characters;
       this.loads = true;
-      if(!characters)
-        {
-          alert("Connection with server failed. Offline mode is on.");
-          this.offset=0;
-          this.initialLetter = '*';
-          this.getCharacters;
-        }
+      if (!characters) {
+        alert("Connection with server failed. Offline mode is on.");
+        this.offset = 0;
+        this.initialLetter = '*';
+        this.getCharacters;
+      }
     });
   }
 
@@ -109,14 +107,12 @@ export class Characters implements OnInit {
       if (this.oldOffset != this.offset) {
         this.oldOffset = this.offset;
         this.page = Number(this.offset);
-        this.page +=1;
+        this.page += 1;
         this.router.navigate(['characters'], {
           queryParams: { off: this.offset, ini: this.initialLetter }
         });
         this.getCharacters();
       }
-
     }
-    console.log('off=' + this.offset + "&ini=" + this.initialLetter + "&PASTELETTER=" + this.pastLetter);
-  }  
+  }
 }

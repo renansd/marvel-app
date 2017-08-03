@@ -1,5 +1,5 @@
 export class Character {
-  
+
   total: number;
   results: {
     id: number;
@@ -14,8 +14,8 @@ export class Character {
     }
   }
 
-  constructor(total: number, id: number, name: string, description: string){
-    this.total = total;  
+  constructor(total: number, id: number, name: string, description: string) {
+    this.total = total;
     this.results.id = id;
     this.results.name = name;
     this.results.description = description;

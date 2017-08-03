@@ -57,15 +57,15 @@ export class Comics implements OnInit {
   }
   constructor(private cFetch: Fetch, private router: Router, private route: ActivatedRoute) {
     this.route.queryParams.subscribe((params: Params) => {
-      if(params['off']) this.offset = params['off'];
+      if (params['off']) this.offset = params['off'];
       else this.offset = 0;
-      if(params['ini']) this.initialLetter = params['ini'];
+      if (params['ini']) this.initialLetter = params['ini'];
       else this.initialLetter = '*';
       this.pastLetter = this.initialLetter;
       this.oldOffset = this.offset;
       this.loads = false;
       this.page = Number(this.offset);
-      this.page +=1;
+      this.page += 1;
     });
   }
   render(): void {
@@ -80,21 +80,26 @@ export class Comics implements OnInit {
       if (this.oldOffset != this.offset) {
         this.oldOffset = this.offset;
         this.page = Number(this.offset);
-        this.page +=1;
+        this.page += 1;
         this.router.navigate(['comics'], {
           queryParams: { off: this.offset, ini: this.initialLetter }
         });
         this.getComics();
       }
 
-    }
-    console.log('off=' + this.offset + "&ini=" + this.initialLetter + "&PASTELETTER=" + this.pastLetter);
+    }    
   }
   getComics(): void {
     this.data = new Date();
     this.tz = this.data.getTime().toString();
     this.cFetch.getComics(this.tz, this.offset * 100, this.initialLetter).then(comics => {
       this.comics = comics;
+      if (!comics) {
+        alert("Connection with server failed. Offline mode is on.");
+        this.offset = 0;
+        this.initialLetter = '*';
+        this.comics;
+      }
       this.loads = true;
     });
   }

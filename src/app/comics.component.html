@@ -1,10 +1,10 @@
 <form #filterForm="ngForm">
   <div class="box">
     <div class="box-body" style="text-align: center">
-      First letter filter:
+      <span>First letter filter:</span>
       <select name="letterPicker" [(ngModel)]="initialLetter">
         <option *ngFor="let letter of alphabet;" [ngValue]="letter">{{letter}}</option>
-      </select>
+      </select>          
     </div>
   </div>
   <div class="info-box bg-light-blue" style="width: 30%;min-width: 300px; margin: auto">
@@ -22,7 +22,7 @@
             </div>
           </ng-template>
           <li class="list-group-item" style="padding: 3px 10px; width: 98%; margin: auto" *ngFor="let comic of comics.results">
-            <a href="{{'comicdetail?id=' + comic.id }}"> {{comic.title}} </a>
+            <a href="{{'comicdetail?id=' + comic.id }}"><span class="info-box-text"> {{comic.title}}</span> </a>
           </li>
         </ul>
       </div>
