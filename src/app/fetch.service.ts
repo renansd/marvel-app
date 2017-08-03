@@ -6,6 +6,7 @@ import { md5 } from './md5';
 import { Comic } from './comic';
 import { Event } from './event';
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/timeout';
 
 @Injectable()
 export class Fetch {
@@ -46,7 +47,7 @@ export class Fetch {
                         resolve(result);
                     } else {
                         if (this.status === 1) {
-                            alert("Connection with server failed. Offline mode is on.");
+                            alert("Connection with server failed. Offline mode is on. Some data may not be avaiable.");
                             this.status = 0;
                         }
                         const result = this.loadLocalStorage('characters', offset, initialLetter, '0');
@@ -56,7 +57,7 @@ export class Fetch {
                 })
                 .catch(err => {
                     if (this.status === 1) {
-                        alert("Connection with server failed. Offline mode is on.");
+                        alert("Connection with server failed. Offline mode is on. Some data may not be avaiable.");
                         this.status = 0;
                     }
                     const result = this.loadLocalStorage('characters', offset, initialLetter, '0');
@@ -75,14 +76,14 @@ export class Fetch {
         }
         if (initialLetter && initialLetter != '*') {
             this.getUrl = this.getUrl + 'titleStartsWith=' + initialLetter + '&';
-        }
+        }        
         this.getUrl = this.getUrl + 'orderBy=title&limit='
             + this.limit + '&ts=' + hash + '&apikey='
             + this.pubKey + '&hash=' + this.shash;
         console.log(this.getUrl);
         console.log(hash);
         return new Promise<Comic[]>((resolve, reject) => {
-            this.http.get(this.getUrl)
+            this.http.get(this.getUrl)                
                 .toPromise()
                 .then((response: any) => {
                     response = response.json();
@@ -93,7 +94,7 @@ export class Fetch {
                         resolve(result);
                     } else {
                         if (this.status === 1) {
-                            alert("Connection with server failed. Offline mode is on.");
+                            alert("Connection with server failed. Offline mode is on. Some data may not be avaiable.");
                             this.status = 0;
                         }
                         const result = this.loadLocalStorage('comics', offset, initialLetter, '0');
@@ -102,7 +103,7 @@ export class Fetch {
                 })
                 .catch(err => {
                     if (this.status === 1) {
-                        alert("Connection with server failed. Offline mode is on.");
+                        alert("Connection with server failed. Offline mode is on. Some data may not be avaiable.");
                         this.status = 0;
                     }
                     const result = this.loadLocalStorage('comics', offset, initialLetter, '0');
@@ -137,7 +138,7 @@ export class Fetch {
                         resolve(result);
                     } else {
                         if (this.status === 1) {
-                            alert("Connection with server failed. Offline mode is on.");
+                            alert("Connection with server failed. Offline mode is on. Some data may not be avaiable.");
                             this.status = 0;
                         }
                         const result = this.loadLocalStorage('events', offset, initialLetter, '0');
@@ -146,7 +147,7 @@ export class Fetch {
                 })
                 .catch(err => {
                     if (this.status === 1) {
-                        alert("Connection with server failed. Offline mode is on.");
+                        alert("Connection with server failed. Offline mode is on. Some data may not be avaiable.");
                         this.status = 0;
                     }
                     const result = this.loadLocalStorage('events', offset, initialLetter, '0');

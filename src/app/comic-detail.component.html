@@ -2,7 +2,7 @@
   <div class="box-body">
     <ul class="list-group">
       <li class="list-group-item" *ngFor="let comic of comic.results" style="list-style-type:none">
-        <div style="float:none;text-align: center"><img style="border:5px solid #3c8dbc" src="{{comic.thumbnail.path + size + comic.thumbnail.extension}}" ></div> 
+        <div style="float:none;text-align: center"><img style="border:5px solid #3c8dbc" src="{{comic.thumbnail.path + size + comic.thumbnail.extension}}" onerror="this.src='/assets/imgerror.jpg';"></div> 
         <br>
         <div style="color: #3c8dbc; font-family: 'Kanit', sans-serif;">
         <span>ID: {{comic.id}}</span><br><br>    
